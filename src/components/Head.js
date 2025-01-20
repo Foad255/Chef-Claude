@@ -11,13 +11,13 @@ function Head() {
   }
 
   function handleClick() {
-      if (inputValue !== '') {
-        setInputValue('')
-        setList(prev => [...prev, inputValue])
-        // console.log(list) // still not updated because setList is  asynchronous
-      } else {
-        setPlaceHolder('Please enter something')
+    if (inputValue !== '') {
+      if (list.some(list.map(item => item.key) === inputValue)) {
+        setPlaceHolder(`${inputValue} is already taken`)
       }
+    } else {
+      setPlaceHolder('Please enter something')
+    }
   }
 
   return (
