@@ -12,8 +12,11 @@ function Head() {
 
   function handleClick() {
     if (inputValue !== '') {
-      if (list.some(list.map(item => item.key) === inputValue)) {
+      if (list.some((item => item === inputValue))) {
         setPlaceHolder(`${inputValue} is already taken`)
+      } else {
+        setList(prev => [...prev,  inputValue])
+        setInputValue('')
       }
     } else {
       setPlaceHolder('Please enter something')
