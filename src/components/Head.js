@@ -2,21 +2,19 @@ import { useState } from 'react'
 import '../index.css'
 
 function Head() {
-  const [ inputValue , setInputValue ] = useState('')
   const [ list , setList ] = useState([])
-  const [ placeHolder, setPlaceHolder ] = useState('e.g. organo')
+  const [ placeHolder, setPlaceHolder ] = useState('e.g. oregano')
 
-  function handleInputValue(event) {
-    setInputValue(event.target.value)
-  }
 
-  function handleClick() {
-    if (inputValue !== '') {
-      if (list.some((item => item === inputValue))) {
-        setPlaceHolder(`${inputValue} is already taken`)
+  function addNewIngredient(formData) {
+    const ingredient = formData.get('ingredient')
+
+    if (ingredient !== '') {
+      if (list.some((item => item === ingredient))) {
+        setPlaceHolder(`${ingredient} is already taken`)
       } else {
-        setList(prev => [...prev,  inputValue])
-        setInputValue('')
+        setList(prev => [...prev,  ingredient])
+        setPlaceHolder('e.g. oregano')
       }
     } else {
       setPlaceHolder('Please enter something')
@@ -25,11 +23,11 @@ function Head() {
 
   return (
     <>
-      <form className="head-container">
+      <form action={addNewIngredient} className="head-container">
         <input 
-        value = {inputValue}  placeholder= {placeHolder}
-        onChange = {handleInputValue} ></input>
-        <button type = "button" onClick= {handleClick} >Add ingredient</button>
+        placeholder= {placeHolder}
+         name="ingredient" ></input>
+        <button >Add ingredient</button>
       </form>
 
       <form>
@@ -37,7 +35,6 @@ function Head() {
         {list.map((item) => ( <li key= {item}>{item}</li>))}
         </ul>
       </form>
-
     </>
   )
 }
