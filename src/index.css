@@ -34,4 +34,41 @@ button {
     color: white;
     border-radius: 10px;
     padding: 10px 30px;
+    cursor: pointer;
+}
+
+
+ul {
+    line-height: 35px;
+}
+
+.pre-title {
+    margin: 50px 20px 10px;
+}
+
+.Decrease-btn {
+    padding: 5px 10px;
+    border-radius: 30px;
+    border-color: rgba(0, 0, 0, 0.297);
+    margin: 10px 0 10px 20px;
+    cursor: pointer;
+}
+
+
+.Decrease-btn:active {
+    transform: scale(0.98);
+}
+
+.Increase-btn {
+    padding: 5px 10px;
+    border-radius: 30px;
+    border-color: rgb(0, 0, 0);
+    background-color: rgb(0, 255, 0);
+    color: black;
+    margin: 10px 0 10px 20px;
+    cursor: pointer;
+}
+
+.Decrease-btn:active {
+    transform: scale(0.98);
 }
