@@ -1,5 +1,37 @@
 import { useState } from 'react';
+import Markdown from 'react-markdown'
+ 
 import '../index.css';
+
+// ------------------ AI API -------------------------------------------------
+import { HfInference } from "@huggingface/inference";
+
+const client = new HfInference("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");
+
+export async function getChatCompletion(list) {
+    let out = "";
+
+    const stream = await client.chatCompletionStream({
+        model: "google/gemma-2-2b-it",
+        messages: [
+            {
+                role: "user",
+                content: `I have these ingredients ${list} please give me a recipe i can make with these ingredients`
+            }
+        ],
+        max_tokens: 500
+    });
+
+    for await (const chunk of stream) {
+        if (chunk.choices && chunk.choices.length > 0) {
+            const newContent = chunk.choices[0].delta.content;
+            out += newContent;
+        }  
+    }
+
+    return out;
+}
+
 
 // Hidden elements
 function HandleElements({ count, Decrease, condition, Increase, Hincrease }) {
@@ -19,6 +51,27 @@ function HandleIncreaseEl({reback}) {
   return <button onClick={reback} className="Increase-btn">+</button>;
 }
 
+function HandleRecipe({recipe}) {
+
+  return (
+  <div>
+      <p>Ready for recipe</p>
+      <button onClick={recipe}>Get recipe</button>
+  </div>
+  )
+}
+
+function Recipe({recipe}) {
+  return (
+    <section aria-live="polite">
+        <Markdown>
+          {recipe}
+        </Markdown>
+    </section>
+  )
+}
+
+
 
 function Head() {
   const [list, setList] = useState([]);
@@ -27,6 +80,9 @@ function Head() {
   const [count, setCount] = useState(0);
   const [showHandleIncreaseEl, setShowHandleIncreaseEl] = useState(false);
   const [ reItem , setReItem ] = useState([])
+  const [ showHandleRecipe , setShowHandleRecipe ] = useState(false);
+  const [ showRecipe , setShowRecipe ] = useState(false)
+  const [ recipe , setRecipe ] = useState('')
 
   function addNewIngredient(formData) {
     const ingredient = formData.get('ingredient');
@@ -39,6 +95,10 @@ function Head() {
         setPlaceHolder('e.g. oregano');
         setShowHandleElements(true);
         setCount((prev) => prev + 1);
+        // with 3 ingredient you can make a recipe
+         if (list.length > 1) {
+           setShowHandleRecipe(true)
+         }
       }
     } else {
       setPlaceHolder('Please enter something');
@@ -66,6 +126,8 @@ function Head() {
 2- Increase the count
 3- remove the item from the array (removed values array)
 4- add the item to The list
+---- link for diagram ( - and + )
+-- https://lucid.app/lucidspark/caec8dc3-bd21-4d0b-b819-2776cecae6f8/edit?viewport_loc=-3877%2C-2280%2C6100%2C2946%2C0_0&invitationId=inv_de6ba947-bf16-42d1-bce3-e9805db123a4
  */
 
 // console.log(reItem)
@@ -87,6 +149,12 @@ function handleIncrease() {
 
 
 
+function handleRecipe() {
+  setShowRecipe(true)
+  // render the recipe
+  getChatCompletion(list).then(result =>   setRecipe(result));
+
+}
   return (
     <>
       <form action={addNewIngredient} className="head-container">
@@ -112,6 +180,8 @@ function handleIncrease() {
           ))}
         </ul>
       </div>
+       {showHandleRecipe && <HandleRecipe recipe={handleRecipe}/> }
+       {showRecipe && <Recipe recipe={recipe} />}
     </>
   );
 }
