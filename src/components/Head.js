@@ -78,11 +78,17 @@ function Head() {
 function handleIncrease() {
   if (reItem.length > 0)  // Ensure there are a removed values
     {
-  setCount(count + 1);
-  setReItem((prevList) => {
-      const IList = [...prevList];
+      setReItem((prevList) => {
+      const IList = [... new Set(prevList)]; // Just Double sure
       const removedItem = IList.pop(); // Remove the first item
-      setList((prev) => [...prev, removedItem]); // Adding the Item to the list
+      if (!list.includes(removedItem)) // Ensure the ingredient hasn't been added to the list
+      {
+        setCount(count + 1); // increase the count
+        setList((prev) => [...prev, removedItem]); // Adding the Item to the list
+      } else {
+
+      }
+      console.log(list.length)
       if (list.length > 1) {
         setShowHandleRecipe(true)
       }
