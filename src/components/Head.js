@@ -1,75 +1,13 @@
 import { useState } from 'react';
-import Markdown from 'react-markdown'
- 
 import '../index.css';
 
 // ------------------ AI API -------------------------------------------------
-import { HfInference } from "@huggingface/inference";
-
-const client = new HfInference("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");
-
-export async function getChatCompletion(list) {
-    let out = "";
-
-    const stream = await client.chatCompletionStream({
-        model: "google/gemma-2-2b-it",
-        messages: [
-            {
-                role: "user",
-                content: `I have these ingredients ${list} please give me a recipe i can make with these ingredients`
-            }
-        ],
-        max_tokens: 500
-    });
-
-    for await (const chunk of stream) {
-        if (chunk.choices && chunk.choices.length > 0) {
-            const newContent = chunk.choices[0].delta.content;
-            out += newContent;
-        }  
-    }
-
-    return out;
-}
+import {getChatCompletion} from './api.js'
 
 
 // Hidden elements
-function HandleElements({ count, Decrease, condition, Increase, Hincrease }) {
-  return (
-    <>
-      <span className="count">Count: {count}</span>
-      <button type="button" onClick={Decrease} className="Decrease-btn" disabled={count === 0}>-</button>
-      {/* condition <HandleIncreaseEl  define handleIncrease function /> */}
-      {condition && <Increase reback={Hincrease} />}
-      <h1>Let's make a recipe:</h1>
-    </>
-  );
-}
-
-// Setting the + button
-function HandleIncreaseEl({reback}) {
-  return <button onClick={reback} className="Increase-btn">+</button>;
-}
-
-function HandleRecipe({recipe}) {
-
-  return (
-  <div>
-      <p>Ready for recipe</p>
-      <button onClick={recipe}>Get recipe</button>
-  </div>
-  )
-}
-
-function Recipe({recipe}) {
-  return (
-    <section aria-live="polite">
-        <Markdown>
-          {recipe}
-        </Markdown>
-    </section>
-  )
-}
+import {HandleElements, HandleIncreaseEl} from './features.js'
+import {HandleRecipe, Recipe} from './recipe.js'
 
 
 
@@ -84,9 +22,9 @@ function Head() {
   const [ showRecipe , setShowRecipe ] = useState(false)
   const [ recipe , setRecipe ] = useState('')
 
+
   function addNewIngredient(formData) {
     const ingredient = formData.get('ingredient');
-
     if (ingredient !== '') {
       if (list.some((item) => item === ingredient)) {
         setPlaceHolder(`${ingredient} is already taken`);
@@ -109,7 +47,12 @@ function Head() {
   function handleDecrease() {
     if (count > 0) {
       setCount(count - 1);
-      setShowHandleIncreaseEl(true);
+      setShowHandleIncreaseEl(true);  
+
+      // console.log(count)
+      if (count < 4) {
+        setShowHandleRecipe(false)
+     }
       setList((prevList) => {
         const Dlist = [...prevList];
         let  Item = Dlist.pop();
@@ -140,14 +83,13 @@ function handleIncrease() {
       const IList = [...prevList];
       const removedItem = IList.pop(); // Remove the first item
       setList((prev) => [...prev, removedItem]); // Adding the Item to the list
+      if (list.length > 1) {
+        setShowHandleRecipe(true)
+      }
+
       return IList;
   });
-
-  console.log('Current reItem:', reItem);
-  console.log('Increase');
 }}
-
-
 
 function handleRecipe() {
   setShowRecipe(true)
@@ -180,7 +122,7 @@ function handleRecipe() {
           ))}
         </ul>
       </div>
-       {showHandleRecipe && <HandleRecipe recipe={handleRecipe}/> }
+       {showHandleRecipe && <HandleRecipe Hrecipe={handleRecipe}/> }
        {showRecipe && <Recipe recipe={recipe} />}
     </>
   );
