@@ -1,15 +1,27 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import '../index.css';
 
 // ------------------ AI API -------------------------------------------------
 import {getChatCompletion} from './api.js'
 
-
 // Hidden elements
 import {HandleElements, HandleIncreaseEl} from './features.js'
 import {HandleRecipe, Recipe} from './recipe.js'
 
+function Loading() {
+  return(
+    <strong>Thinking🔃...</strong>
+  )
+}
 
+function Result() {
+  return(
+    <>
+    <small>⚠️Change the ingredients and try again</small>
+    <h1>The Result : </h1>
+    </>
+  )
+}
 
 function Head() {
   const [list, setList] = useState([]);
@@ -21,6 +33,21 @@ function Head() {
   const [ showHandleRecipe , setShowHandleRecipe ] = useState(false);
   const [ showRecipe , setShowRecipe ] = useState(false)
   const [ recipe , setRecipe ] = useState('')
+  const [ showLoading, setShowLoading ] = useState(false)
+  const [ showResult, setShowResult ] = useState(false)
+  const recipeSection = useRef(null)
+  // console.log(recipeSection)
+
+  useEffect(() => {
+    if (recipe !== '' && recipeSection.current !== null) {
+      recipeSection.current.scrollIntoView({behavior: 'smooth'})
+    } if (recipe) {
+        const mySection = document.querySelector('#mySection')
+        mySection.classList.add('visible')
+        setShowLoading(false)
+        setShowResult(true)
+    }
+  }, [recipe])
 
 
   function addNewIngredient(formData) {
@@ -42,7 +69,6 @@ function Head() {
       setPlaceHolder('Please enter something');
     }
   }
-
   
   function handleDecrease() {
     if (count > 0) {
@@ -63,6 +89,7 @@ function Head() {
       setShowHandleElements(false);
     }
   }
+
 
 /*
 1- set array for removed values
@@ -98,16 +125,19 @@ function handleIncrease() {
 }}
 
 function handleRecipe() {
+  //  when click Get recipe shoe loading
+  setShowLoading(true)
   setShowRecipe(true)
   // render the recipe
   getChatCompletion(list).then(result =>   setRecipe(result));
+
 
 }
   return (
     <>
       <form action={addNewIngredient} className="head-container">
         <input placeholder={placeHolder} name="ingredient" />
-        <button type="submit">Add ingredient</button>
+        <button type="submit" className="add-btn">Add ingredient</button>
       </form>
 
       <div>
@@ -129,7 +159,9 @@ function handleRecipe() {
         </ul>
       </div>
        {showHandleRecipe && <HandleRecipe Hrecipe={handleRecipe}/> }
-       {showRecipe && <Recipe recipe={recipe} />}
+       {showLoading && <Loading />}
+       {showResult && <Result />}
+       {showRecipe && <Recipe recipeSection={recipeSection} recipe={recipe} />}
     </>
   );
 }

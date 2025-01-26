@@ -1,6 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+body {
+    margin: 40px;
+    font-family: 'Roboto' , sans-serif;
+    background-color: rgba(213, 187, 218, 0.91);
+}
+
 .nav-container {
     display: flex;
     align-Items:center;
+    background: linear-gradient(to right, #FF6F61, #FFD700);
     justify-content: center;
     border: 1px solid rgb(220, 220, 220);
     border-radius: 30px;
@@ -11,6 +20,12 @@
     font-size: 40px;
 
 }
+.nav-container img {
+    border-radius: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.1)
+}
 
 .head-container {
     display: flex;
@@ -18,19 +33,25 @@
     margin-top: 30px;
 }
 
-.head-container  input{
+.head-container input {
     padding: 10px;
-    border: 1px solid rgba(224, 224, 224, 0.863);
+    border: 1px solid rgba(220, 214, 214, 0.863);
     border-radius: 4px;
     flex-grow: 1;
     min-width: 150px;
     max-width: 400px;
- 
-
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-button {
-    background-color: black;
+.head-container input:focus {
+    border-color: #b6c5ff; 
+    box-shadow: 0 0 8px rgba(27, 81, 29, 0.5);
+    outline: none; /* Remove the default outline for a cleaner look */
+}
+
+.add-btn {
+    background: linear-gradient(to right, #FF416C, #FF4B2B);
+    border: none;
     color: white;
     border-radius: 10px;
     padding: 10px 30px;
@@ -40,6 +61,10 @@ button {
 
 ul {
     line-height: 35px;
+}
+ul li {
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .pre-title {
@@ -52,12 +77,18 @@ ul {
     border-color: rgba(0, 0, 0, 0.297);
     margin: 10px 0 10px 20px;
     cursor: pointer;
+    background-color: black;
+    color: white;
 }
 
-
+.Decrease-btn:hover {
+    background-color: grey;
+    color: black;
+}
 .Decrease-btn:active {
     transform: scale(0.98);
 }
+
 
 .Increase-btn {
     padding: 5px 10px;
@@ -68,7 +99,34 @@ ul {
     margin: 10px 0 10px 20px;
     cursor: pointer;
 }
-
-.Decrease-btn:active {
+.Increase-btn:hover {
+    background-color:limegreen;
+    color: white;
+}
+.Increase-btn:active {
     transform: scale(0.98);
+}
+
+.recipe-btn {
+    background: linear-gradient(to right, #e80551, #0dd4cd);
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.visible {
+    background-color: rgba(128, 128, 128, 0.448);
+    padding: 30px;
+    font-family: Arial;
+    line-height: 30px;
+
+}
+.visible li {
+    font-weight: bold;
 }

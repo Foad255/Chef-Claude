@@ -3,16 +3,15 @@ import Markdown from 'react-markdown'
 export function HandleRecipe(props) {
 
   return (
-  <div>
-      <p>Ready for recipe</p>
-      <button onClick={props.Hrecipe}>Get recipe</button>
-  </div>
+  <span>
+      <button onClick={props.Hrecipe} className="recipe-btn">Get recipe</button>
+  </span>
   )
 }
 
-export function Recipe({recipe}) {
+export function Recipe({recipe,recipeSection}) {
   return (
-    <section aria-live="polite">
+    <section id="mySection"  ref={recipeSection}aria-live="polite">
         <Markdown>
           {recipe}
         </Markdown>

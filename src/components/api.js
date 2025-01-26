@@ -10,7 +10,7 @@ export async function getChatCompletion(list) {
         messages: [
             {
                 role: "user",
-                content: `I have these ingredients ${list} please give me a recipe i can make with these ingredients`
+                content: `I have these ingredients ${list} please give me a recipe i can make with these ingredients.`
             }
         ],
         max_tokens: 500

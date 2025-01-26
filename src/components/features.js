@@ -2,7 +2,7 @@
 export function HandleElements(props) {
     return (
       <>
-        <span className="count">Count: {props.count}</span>
+        <strong className="count">number of ingredients: {props.count}</strong>
         <button type="button" onClick={props.Decrease} className="Decrease-btn" disabled={props.count === 0}>-</button>
         {/* condition <HandleIncreaseEl  define handleIncrease function /> */}
         {props.condition && <props.Increase reback={props.Hincrease} />}
