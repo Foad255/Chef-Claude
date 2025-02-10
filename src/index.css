@@ -3,13 +3,13 @@
 body {
     margin: 40px;
     font-family: 'Roboto' , sans-serif;
-    background-color: rgba(213, 187, 218, 0.91);
+    background-color: rgba(228, 228, 228, 0.91);
 }
 
 .nav-container {
     display: flex;
     align-Items:center;
-    background: linear-gradient(to right, #FF6F61, #FFD700);
+    background: linear-gradient(to right, #804a45, #978414);
     justify-content: center;
     border: 1px solid rgb(220, 220, 220);
     border-radius: 30px;

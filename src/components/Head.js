@@ -25,7 +25,7 @@ function Result() {
 
 function Head() {
   const [list, setList] = useState([]);
-  const [placeHolder, setPlaceHolder] = useState('e.g. oregano');
+  const [placeHolder, setPlaceHolder] = useState('add at least 3 ingredietns, e.g.oregano');
   const [showHandleElements, setShowHandleElements] = useState(false);
   const [count, setCount] = useState(0);
   const [showHandleIncreaseEl, setShowHandleIncreaseEl] = useState(false);
